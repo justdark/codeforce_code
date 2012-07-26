@@ -7,4 +7,7 @@ int first()
 {
 	printf("darkscope");
 }
-
+int second_by_another()
+{
+	printf("another!!");
+}
