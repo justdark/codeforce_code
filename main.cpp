@@ -3,3 +3,8 @@ int main()
 {
    printf("hello,world\n");
 }
+int first()
+{
+	printf("darkscope");
+}
+
