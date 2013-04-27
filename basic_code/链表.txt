@@ -1,0 +1,141 @@
+//////////////////////////////////////////////////////链表范例///////（合并果子）///////////////////////////////////////////////
+
+                            program project1;
+
+type
+
+arr=^arra;
+
+ arra=record
+
+   data:longint;
+
+   link:arr;
+
+   end;
+
+var
+
+i,j,k,t,x,n,kl,zong:longint;
+
+m:longint;
+
+a:arr;
+
+procedure insert(var a:arr; x:longint);
+
+var
+
+q,qq,qqq,u,ii,p:arr;
+
+begin
+
+  if a=nil then begin
+
+                  new(q);
+
+                  q^.data:=x;
+
+                  q^.link:=a;
+
+                  a:=q;
+
+                  exit;
+
+                end;
+
+  new(q);
+
+  if x<=a^.data then begin
+
+                      q^.data:=x;
+
+                      q^.link:=a;
+
+                      a:=q;
+
+                      exit;
+
+                    end;
+
+  qq:=a;qqq:=a;
+
+  while (qq<>nil)and(qq^.data<x) do
+
+  begin
+
+    qqq:=qq;
+
+    qq:=qq^.link;
+
+  end;
+
+  if qq=nil then begin
+
+                   new(ii);
+
+                   ii^.data:=x;
+
+                   ii^.link:=nil;
+
+                   qqq^.link:=ii;
+
+                 end;
+
+  new(u);
+
+  u^.data:=x;
+
+  u^.link:=qq;
+
+  qqq^.link:=u;
+
+  exit;
+
+end;
+
+ 
+
+function getmin():longint;
+
+begin
+
+  if a=nil then exit;
+
+  getmin:=a^.data;
+
+  a:=a^.link;
+
+end;
+
+ 
+
+begin
+
+readln(n);k:=0;
+
+zong:=0;
+
+for i:=1 to n do begin
+
+                   read(m);
+
+                   insert(a,m);
+
+                 end;
+
+ 
+
+for i:=1 to n-1 do begin
+
+                     kl:=getmin+getmin;
+
+                     insert(a,kl);
+
+                     zong:=zong+kl;
+
+                   end;
+
+writeln(zong);
+
+end.

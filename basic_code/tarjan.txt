@@ -1,0 +1,312 @@
+///////////////////////////////////////////////////////tarjian·¶Àý/////////////////////////////////////////////////////////////
+
+program tarjian;
+
+var
+
+i,j,k,m,n,p,all:longint;
+
+low,dfn,zhan,ru,qiang,a,qiangru:array[1..1000] of longint;
+
+line,chu:array[0..1000,0..1000] of longint;
+
+h:array[1..1000] of boolean;
+
+ 
+
+procedure tarjian(r:longint);
+
+var
+
+i,j,t,k:longint;
+
+boo:boolean;
+
+begin
+
+  inc(p);
+
+  zhan[p]:=r;
+
+  dfn[r]:=p;
+
+  low[r]:=p;
+
+  for i:=1 to chu[r,0] do begin
+
+                            j:=chu[r,i];
+
+                            if qiang[j]=0 then begin
+
+                                                 if dfn[j]=0 then tarjian(j);
+
+                                                 if (low[j]<low[r])and(dfn[j]<>0) then low[r]:=low[j];
+
+                                               end;
+
+                          end;
+
+  if low[r]=dfn[r] then begin
+
+                          t:=dfn[r];
+
+                          k:=0;fillchar(a,sizeof(a),0);
+
+                          for i:=t to p do if qiang[zhan[i]]=0 then begin
+
+                                             qiang[zhan[i]]:=r;
+
+                                             dfn[zhan[i]]:=0;
+
+                                             low[zhan[i]]:=0;
+
+                                             inc(k);
+
+                                             a[k]:=zhan[i];
+
+                                           end;
+
+                         for i:=1 to k do
+
+                            for j:=1 to k do begin
+
+                                               if line[a[i],a[j]]=1 then
+
+                                                                    begin
+
+                                                                    dec(ru[a[j]]);
+
+                                                                    line[a[i],a[j]]:=0;
+
+                                                                   end;
+
+                                             end;
+
+                          p:=t-1;
+
+                        end;
+
+ 
+
+end;
+
+begin
+
+readln(n);
+
+fillchar(line,sizeof(line),0);
+
+fillchar(ru,sizeof(ru),0);
+
+fillchar(chu,sizeof(chu),0);
+
+p:=0;all:=0;
+
+for i:=1 to n do
+
+  for j:=1 to n do begin
+
+                       read(line[i,j]);
+
+                       if line[i,j]=1 then begin
+
+                                             inc(ru[j]);
+
+                                             inc(chu[i,0]);
+
+                                             chu[i,chu[i,0]]:=j;
+
+                                           end;
+
+                   end;
+
+for i:=1 to n do tarjian(i);
+
+fillchar(qiangru,sizeof(qiangru),0);
+
+fillchar(h,sizeof(h),0);
+
+for i:=1 to n do begin
+
+                   if ru[i]<>0 then begin
+
+                                      inc(qiangru[qiang[i]]);
+
+                                    end;
+
+                   h[qiang[i]]:=true;
+
+                 end;
+
+for i:=1 to n do  if (h[qiang[i]]=true) and(qiangru[qiang[i]]=0) then
+
+                  begin
+
+                    inc(all);
+
+                    h[qiang[i]]:=false;
+
+                 end;
+
+writeln(all);
+
+end.
+
+ 
+
+ 
+
+ 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////Á´±í°ætarjan/////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+program poj2186;
+type
+  arr=^arra;
+  arra=record
+       data:longint;
+       link:arr;
+       end;
+var
+  m,n,i,j,k,top,ooo,all,zong:longint;
+  used:array[1..10000] of boolean;
+  dfn,low,a,ha:array[1..10000] of longint;
+  zhan,qiang,cu,qiangcu:array[1..10000] of longint;
+  chu:array[1..10000]  of arr;
+procedure insert(var a:arr; x:longint);
+var kk:arr;
+begin
+new(kk);
+kk^.data:=x;
+kk^.link:=a;
+a:=kk;
+end;
+
+function ok(a,b:longint):boolean;
+var
+s,ss:arr;
+i,j:longint;
+begin
+  ss:=chu[a]; s:=chu[a];
+  if (ss<>nil) and (ss^.data=b) then  begin
+                        chu[a]:=chu[a]^.link;
+                        exit(true);
+                      end;
+  if ss<>nil then
+  repeat
+    if ss^.data=b then  begin
+                        s^.link:=ss^.link;
+                        exit(true);
+                        end;
+    s:=ss;ss:=ss^.link;
+  until (ss=nil);
+  exit(false);
+end;
+
+procedure tarjan(i:longint);
+var
+j,k,t:longint;
+aa:arr;
+begin
+  inc(top);
+  zhan[top]:=i;
+  low[i]:=top;
+  dfn[i]:=top;aa:=chu[i];
+  if aa<>nil then
+  repeat
+    j:=aa^.data;aa:=aa^.link;
+    if qiang[j]=0 then begin
+                         if dfn[j]=0 then tarjan(j);
+                         if (dfn[j]<>0)and(low[j]<low[i]) then
+                                                  begin
+                                                  low[i]:=low[j];
+                                                  end;
+                       end;
+  until aa=nil;
+  k:=0;
+  if low[i]=dfn[i] then  begin begin
+                        fillchar(a,sizeof(a),0);
+                        k:=0;
+                          t:=low[i];
+                           for j:=t to top do if qiang[zhan[j]]=0 then begin
+                                             qiang[zhan[j]]:=i;
+                                             dfn[zhan[j]]:=0;
+                                             low[zhan[j]]:=0;
+                                             inc(k);
+                                             a[k]:=zhan[j];
+                                           end;
+                          top:=t-1;
+                        end;
+ for t:=1 to k do
+   for j:=1 to k do  if (a[t]<>a[j]) and ok(a[t],a[j]) then begin
+                                           
+                                             dec(cu[a[t]]);
+                                           end;
+                                           end;
+end;
+
+begin
+assign(input,'poj2186.in');
+assign(output,'poj2186.out');
+reset(input);
+rewrite(output);
+  readln(n,m);
+  ooo:=0;
+  fillchar(cu,sizeof(cu),0);
+  for i:=1 to m do begin
+                     readln(j,k);
+                     inc(cu[j]);
+                     insert(chu[j],k);
+                   end;
+  top:=0;
+  fillchar(qiang,sizeof(qiang),0);
+  for i:=1 to n do if qiang[i]=0 then tarjan(i);
+  fillchar(used,sizeof(used),0);
+  for i:=1 to n do if not used[qiang[i]] then begin
+                                                used[qiang[i]]:=true;
+                                                inc(ooo);
+                                                ha[ooo]:=qiang[i];
+                                               end;
+  fillchar(qiangcu,sizeof(qiangcu),0);
+  //for i:=1 to n do writeln(cu[i]);
+  for j:=1 to n do inc(qiangcu[qiang[j]],cu[j]);
+  all:=0;                                               zong:=0;
+  for i:=1 to ooo do if qiangcu[ha[i]]=0 then inc(zong);
+  for i:=1 to ooo do if qiangcu[ha[i]]=0 then  begin
+              for j:=1 to n do if qiang[j]=ha[i] then
+                                                 inc(all);
+                                                 end;
+  if zong>1 then writeln(0) else
+  writeln(all);
+close(input);
+close(output);
+end.
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 

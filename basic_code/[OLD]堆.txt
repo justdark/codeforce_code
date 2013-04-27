@@ -1,0 +1,127 @@
+///////////////////////////////////////////////////////堆操作范例//////（合并果子）////////////////////////////////////////////
+
+var
+
+dui:array[1..2000000] of longint;
+
+i,j,m,n,k,zong,noww:longint;
+
+ 
+
+procedure insert(x:longint);
+
+var
+
+s,t:longint;
+
+begin
+
+  inc(k); s:=k;
+
+  dui[s]:=x;
+
+  while (s>=1)and(dui[s]<dui[s div 2])  do
+
+  begin
+
+    t:=dui[s];dui[s]:=dui[s div 2];dui[s div 2]:=t;
+
+    s:=s div 2;
+
+  end;
+
+end;
+
+ 
+
+procedure del;
+
+var
+
+ s,ss,t:longint;
+
+begin
+
+  dui[1]:=dui[k];
+
+  dec(k);s:=1;ss:=2;
+
+  if dui[2*s]>dui[2*s+1] then inc(ss);
+
+  while (ss<=k)and(dui[s]>dui[ss]) do
+
+  begin
+
+    t:=dui[s];dui[s]:=dui[ss];dui[ss]:=t;
+
+    s:=ss;ss:=2*s;
+
+    if dui[2*s]>dui[2*s+1] then inc(ss);
+
+  end;
+
+end;
+
+ 
+
+function getmin():longint;
+
+begin
+
+getmin:=dui[1];
+
+del;
+
+end;
+
+ 
+
+begin
+
+init;
+
+  readln(n);
+
+  fillchar(dui,sizeof(dui),0);
+
+  k:=0;zong:=0;
+
+  for i:=1 to n do begin
+
+                     read(m);
+
+                     insert(m);
+
+                   end;
+
+ 
+
+                   
+
+  while k>1 do begin
+
+  noww:=getmin+getmin;
+
+  inc(zong,noww);
+
+  insert(noww);
+
+  end;
+
+ 
+
+  {for i:=1 to k do begin
+
+                     writeln(dui[i]);
+
+                    del;
+
+                end;}
+
+  
+
+  writeln(zong);
+
+outit;
+
+end.

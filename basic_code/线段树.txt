@@ -1,0 +1,127 @@
+///////////////////////////////////////////////Ïß¶ÎÊ÷²Ù×÷·¶Àý///////////////////////////////////£¨easy£©///////////////////////
+
+program easy;
+
+type
+
+arr=record
+
+  l,r,a,b,k:longint;
+
+  end;
+
+var
+
+i,j,m,n,k,a,b,x,y,top:longint;
+
+xian:array[1..400000] of arr;
+
+ 
+
+procedure maketree(a,b:longint);
+
+var
+
+now:longint;
+
+begin
+
+  inc(top);now:=top;
+
+  xian[now].a:=a;xian[now].b:=b;xian[now].k:=0;
+
+  if a<b then begin
+
+                xian[now].l:=top+1;
+
+                maketree(a,(a+b) div 2);
+
+                xian[now].r:=top+1;
+
+                maketree((a+b) div 2 +1,b);
+
+              end;
+
+end;
+
+ 
+
+procedure insert(k,a,b:longint);
+
+var
+
+now,mid:longint;
+
+begin
+
+  if (k=0)or(xian[k].a>b)or(xian[k].b<a) then exit;
+
+  if (xian[k].a>=a)and(xian[k].b<=b) then begin
+
+                                            inc(xian[k].k);
+
+                                            exit;
+
+                                          end;
+
+  insert(xian[k].l,a,b);
+
+  insert(xian[k].r,a,b);
+
+end;
+
+ 
+
+function find(k,a:longint):longint;
+
+var all:longint;
+
+begin
+
+  all:=0;
+
+  if (k=0)or(a>xian[k].b)or(xian[k].a>a) then exit(0);
+
+  all:=all+xian[k].k;
+
+  all:=all+find(xian[k].l,a);
+
+  all:=all+find(xian[k].r,a);
+
+  exit(all);
+
+end;
+
+ 
+
+begin
+
+readln(n,m);
+
+top:=0;
+
+maketree(1,n);
+
+for i:=1 to m do begin
+
+                   read(k);
+
+                   if k=1 then begin
+
+                                 readln(x,y);
+
+                                 insert(1,x,y);
+
+                               end;
+
+                   if k=2 then begin
+
+                                 readln(x);
+
+                                 writeln(find(1,x) mod 2);
+
+                               end;
+
+                 end;
+
+end.
